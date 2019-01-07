@@ -1,0 +1,179 @@
+{% extends "movie/base.html" %}
+{% block title %}微电影{% endblock %}
+{% block head %}
+    <script type="text/javascript" src="static/index-animation/js/jquery.js"></script>
+    <script type="text/javascript" src="static/index-animation/js/script.js"></script>
+    <link rel="stylesheet" type="text/css" href="static/index-animation/css/style.css">
+{% endblock %}
+
+{% block body %}
+<section id="hotmovie" style="margin-top:76px">
+    <div class="container">
+        <div class="row wow fadeInRight" data-wow-delay="0.6s">
+            <div class="row">
+                <div class="main_banner">
+	<div class="main_banner_wrap">
+		<canvas id="myCanvas" width="150" height="150"></canvas>
+		<div class="main_banner_box" id="m_box">
+			<a href="javascript:void(0)" class="banner_btn js_pre">
+				<span class="banner_btn_arrow"><i></i></span>
+			</a>
+			<a href="javascript:void(0)" class="banner_btn btn_next js_next">
+				<span class="banner_btn_arrow"><i></i></span>
+			</a>
+			<ul>
+
+				<li id="imgCard0">
+					<a href=""><span style="opacity:0;"></span></a>
+					<img src="/static/img/preview/{{ preview.logo }}" alt="">
+  					<p style="bottom:0">{{ preview.name }}</p>
+				</li>
+                {% for preview in previews %}
+                <li id="imgCard{{ loop.index }}">
+					<a href=""><span style="opacity:0.4;"></span></a>
+					<img src="/static/img/preview/{{ preview.logo }}" alt="">
+  					<p>{{ preview.name }}</p>
+				</li>
+                {% endfor %}
+
+			</ul>
+			<!--火狐倒影图层-->
+			<p id="rflt"></p>
+			<!--火狐倒影图层-->
+		</div>
+		<!--序列号按钮-->
+		<div class="btn_list">
+			<span class="curr"></span><span></span><span></span><span></span><span></span>
+		</div>
+	</div>
+
+</div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--热门电影-->
+<!--电影列表-->
+<section id="movielist">
+    <div class="container">
+        <div class="row wow fadeIn" data-wow-delay="0.6s">
+            <div class="col-md-12 table-responsive">
+                <table class="table text-left table-bordered" id="movietags">
+                    <tr>
+                        <td style="width:10%;">电影标签</td>
+                        <td style="width:90%;">
+                            {% for tag in tags %}
+                            <a class="label label-info" href="/?tag={{ tag.id }}"><span class="glyphicon glyphicon-tag"></span>&nbsp;{{ tag.name }}</a>
+                            &nbsp;
+                            {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>电影星级</td>
+                        <td>
+                            <a class="label label-warning" href="/?star=1"><span class="glyphicon glyphicon-star"></span>&nbsp;一星</a>
+                            &nbsp;
+                            <a class="label label-warning" href="/?star=2"><span class="glyphicon glyphicon-star"></span>&nbsp;二星</a>
+                            &nbsp;
+                            <a class="label label-warning" href="/?star=3"><span class="glyphicon glyphicon-star"></span>&nbsp;三星</a>
+                            &nbsp;
+                            <a class="label label-warning" href="/?star=4"><span class="glyphicon glyphicon-star"></span>&nbsp;四星</a>
+                            &nbsp;
+                            <a class="label label-warning" href="/?star=5"><span class="glyphicon glyphicon-star"></span>&nbsp;五星</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>上映时间</td>
+                        <td>
+                            <a class="label label-default" href="/?year=new"><span class="glyphicon glyphicon-time"></span>&nbsp;最近</span></a>
+                            &nbsp;
+                            <a class="label label-default" href="/?year=2018"><span class="glyphicon glyphicon-time"></span>&nbsp;2018</span></a>
+                            &nbsp;
+                            <a class="label label-default" href="/?year=2017"><span class="glyphicon glyphicon-time"></span>&nbsp;2017</span></a>
+                            &nbsp;
+                            <a class="label label-default" href="/?year=2016"><span class="glyphicon glyphicon-time"></span>&nbsp;2016</span></a>
+                            &nbsp;
+                            <a class="label label-default" href="/?year=old"><span class="glyphicon glyphicon-time"></span>&nbsp;更早</span></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>播放数量</td>
+                        <td>
+                            <a class="label label-success" href="/?play=high"><span class="glyphicon glyphicon-arrow-down"></span>&nbsp;从高到底</span></a>
+                            &nbsp;
+                            <a class="label label-danger" href="/?play=low"><span class="glyphicon glyphicon-arrow-up"></span>&nbsp;从低到高</span></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>评论数量</td>
+                        <td>
+                            <a class="label label-success" href="/?comment=high"><span class="glyphicon glyphicon-arrow-down"></span>&nbsp;从高到底</span></a>
+                            &nbsp;
+                            <a class="label label-danger" href="/?comment=low"><span class="glyphicon glyphicon-arrow-up"></span>&nbsp;从低到高</span></a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            {% for movie in paginate.items %}
+            <div class="col-md-3">
+                <div class="movielist text-center">
+                    <!--<img data-original="holder.js/262x166"
+                             class="img-responsive lazy center-block" alt="">-->
+                    <a href="/play?movie={{ movie.id }}" target="_blank"><img src="/static/img/logo/{{ movie.logo }}" width="262px" height="166px" alt=""></a>
+                    <div class="text-left" style="margin-left:auto;margin-right:auto;width:210px;">
+                        <span style="color:#999;font-style: italic;">{{ movie.name }}</span><br>
+                        <div>
+                            {% for i in range(movie.star) %}
+                            <span class="glyphicon glyphicon-star" style="color:#FFD119"></span>
+                            {% endfor %}
+                            {% for i in range(5 - movie.star) %}
+                            <span class="glyphicon glyphicon-star-empty" style="color:#FFD119"></span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <a href="/play?movie={{ movie.id }}" class="btn btn-primary" target="_blank" role="button"><span class="glyphicon glyphicon-play"></span>&nbsp;播放</a>
+                </div>
+            </div>
+            {% endfor %}
+            <div class="col-md-12">
+                <nav aria-label="Page navigation">
+                   <ul class="pagination">
+                    <li>
+                        <a href="?page=1" aria-label="First">
+                            <span aria-hidden="true">首页</span>
+                        </a>
+                    </li>
+                    <li>
+                        {% if paginate.has_prev %}
+                        <a href="?page={{ paginate.prev_num }}" aria-label="Previous">
+                        {% else %}
+                        <a href="javascript:;" aria-label="Previous">
+                        {% endif %}
+                            <span aria-hidden="true">上一页</span>
+                        </a>
+                    </li>
+                    <li><a href="#">{{ paginate.page }}&nbsp;/&nbsp;{{ paginate.pages }}</a></li>
+                    <li>
+                        {% if paginate.has_next %}
+                        <a href="?page={{ paginate.next_num }}" aria-label="Next">
+                        {% else %}
+                        <a href="javascript:;" aria-label="Next">
+                        {% endif %}
+                            <span aria-hidden="true">下一页</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="?page={{ paginate.pages }}" aria-label="Last">
+                            <span aria-hidden="true">尾页</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!--电影列表-->
+<!--底部-->
+
+{% endblock %}

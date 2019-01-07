@@ -1,0 +1,77 @@
+{% extends "movie/base.html" %}
+{% block title %}微电影 - 会员中心{% endblock %}
+{% block head %}{% endblock %}
+{% block body %}
+    <style>
+        .navbar-brand>img {
+            display: inline;
+        }
+        .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9{
+            padding-right: 3px;
+            padding-left: 3px;
+        }
+        .media{
+            padding:3px;
+            border:1px solid #ccc
+        }
+    </style>
+
+<div class="container" style="margin-top:76px">
+    <div class="col-md-3">
+        <div class="list-group">
+            <a href="/user_info" class="list-group-item active">
+                <span class="glyphicon glyphicon-user"></span>&nbsp;会员中心
+            </a>
+             <a href="/user_password" class="list-group-item">
+                <span class="glyphicon glyphicon-lock"></span>&nbsp;修改密码
+            </a>
+            <a href="/user_comments" class="list-group-item">
+                <span class="glyphicon glyphicon-comment"></span>&nbsp;评论记录
+            </a>
+            <a href="/user_login_log" class="list-group-item">
+                <span class="glyphicon glyphicon-calendar"></span>&nbsp;登录日志
+            </a>
+            <a href="/user_movie_collection" class="list-group-item">
+                <span class="glyphicon glyphicon-heart"></span>&nbsp;收藏电影
+            </a>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                <h3 class="panel-title"><span class="glyphicon glyphicon-map-marker"></span>&nbsp;会员中心</h3>
+            </div>
+            <div class="panel-body">
+                <form method="post">
+                    <fieldset>
+                            {% for err in get_flashed_messages(category_filter=["change_success"]) %}
+                                <div class="col-md-12" id="error_oldpwd" style="color:green;">{{ err }}</div>
+                            {% endfor %}
+                            <div class="form-group">
+                                <label><span class="glyphicon glyphicon-lock"></span>&nbsp;旧密码</label>
+                                {{ form.password }}
+                            </div>
+                            {% for err in form.password.errors %}
+                            <div class="col-md-12" id="error_oldpwd" style="color:red;">{{ err }}</div>
+                            {% endfor %}
+                            {% for err in get_flashed_messages(category_filter=["change_failed"]) %}
+                                <div class="col-md-12" id="error_oldpwd" style="color:red;">{{ err }}</div>
+                            {% endfor %}
+                            <div class="form-group">
+                                <label><span class="glyphicon glyphicon-lock"></span>&nbsp;新密码</label>
+                                {{ form.new_password }}
+                            </div>
+                            {% for err in form.password.errors %}
+                            <div class="col-md-12" id="error_newpwd" style="color:red;">{{ err }}</div>
+                            {% endfor %}
+                            <a class="btn btn-success" onclick="document.getElementById('user_submit').click()"><span class="glyphicon glyphicon-edit"></span>&nbsp;修改密码</a>
+                            {{ form.csrf_token }}
+                            {{ form.submit }}
+                        </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

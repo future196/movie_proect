@@ -1,0 +1,48 @@
+{% extends "admin/base.html" %}
+{% block body %}
+    <div class="content-wrapper">
+        <!--内容-->
+        <section class="content-header">
+            <h1>微电影管理系统</h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> 角色管理</a></li>
+                <li class="active">修改角色</li>
+            </ol>
+        </section>
+        <section class="content" id="showcontent">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">修改角色</h3>
+                            {% for msg in get_flashed_messages(category_filter=["error"]) %}
+                            <time style="color:red;">&nbsp;&nbsp;&nbsp;{{ msg }}</time>
+                            {% endfor %}
+                        </div>
+                        <form action="/admin/role_modify?target={{ role.id }}" method="post">
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label>角色名称</label>
+                                <input class="form-control" id="name" name="name" placeholder="请输入角色名称" required="" type="text" value="{{ role.name }}">
+                            </div>
+
+                            <div class="form-group">
+                                <label>操作权限</label><br>
+                                {% for auth in auth_list %}
+                                &nbsp;&nbsp;&nbsp;<input id="auth" name="auth" {% if auth.name in auth_check %} checked {% endif %} type="checkbox" value="{{ auth.name }}">&nbsp;{{ auth.name }}<br>
+                                {% endfor %}
+                            </div>
+                            <div class="box-footer">
+                                <input id="csrf_token" name="csrf_token" type="hidden" value="ImRkNWM4Yzc1MGUzMmVjOGYwNDFmZDIyNDA0NGNmN2E0Njk3YTdkZmMi.DvZCXw.cZafhcyotxfp1E0bMCUkDgjVui8">
+                                <input class="btn btn-primary" id="submit" name="submit" type="submit" value="修改">
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        <!--内容-->
+    </div>
+ {% endblock %}

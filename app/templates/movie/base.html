@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1 , user-scalable=no">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="shortcut icon" href="static/base/images/logo.png">
+    <link rel="stylesheet" href="static/base/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static/base/css/bootstrap-movie.css">
+    <link rel="stylesheet" href="static/base/css/animate.css">
+
+    <script src="../static/base/js/jquery.min.js"></script>
+    <script src="../static/base/js/bootstrap.min.js"></script>
+    <script src="../static/base/js/jquery.singlePageNav.min.js"></script>
+    <script src="../static/base/js/wow.min.js"></script>
+    <script src="../static/lazyload/jquery.lazyload.min.js"></script>
+    <script src="//cdn.bootcss.com/holder/2.9.4/holder.min.js"></script>
+    <style>
+        .navbar-brand>img {
+            display: inline;
+        }
+    </style>
+    <style>
+        .media{
+            padding:3px;
+            border:1px solid #ccc
+        }
+    </style>
+    {% block head %}{% endblock %}
+</head>
+
+<body>
+<!--导航-->
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <!--小屏幕导航按钮和logo-->
+        <div class="navbar-header">
+            <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/" class="navbar-brand" style="width:250px;">
+                <img src="static/base/images/logo.png" style="height:30px;">&nbsp;微电影
+            </a>
+        </div>
+        <!--小屏幕导航按钮和logo-->
+        <!--导航-->
+        <div class="navbar-collapse collapse">
+            <form action="/search" method="get" class="navbar-form navbar-left" role="search" style="margin-top:18px;">
+                <div class="form-group input-group">
+                    <input type="text" class="form-control" name="data" placeholder="请输入关键字">
+                    <span class="input-group-btn">
+                        <a class="btn btn-default" onclick="document.getElementById('search_submit').click()"><span class="glyphicon glyphicon-search"></span>&nbsp;搜索</a>
+                        <input type="submit" id="search_submit" style="display:none">
+                    </span>
+                </div>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="curlink" href="/"><span class="glyphicon glyphicon-film"></span>&nbsp;电影</a>
+                </li>
+                {% if session.username %}
+                <li>
+                    <a class="curlink" href="/logout"><span class="glyphicon glyphicon-log-out"></span>&nbsp;退出</a>
+                </li>
+                <li>
+                    <a class="curlink" href="/user_info"><span class="glyphicon glyphicon-user"></span>&nbsp;{{ session.username }}</a>
+                </li>
+                {% else %}
+                <li>
+                    <a class="curlink" href="/login"><span class="glyphicon glyphicon-log-in"></span>&nbsp;登录</a>
+                </li>
+                <li>
+                    <a class="curlink" href="/register"><span class="glyphicon glyphicon-plus"></span>&nbsp;注册</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+        <!--导航-->
+
+    </div>
+</nav>
+
+<footer>
+
+</footer>
+<!--底部-->
+
+<script>
+    $(function() {
+        new WOW().init();
+    })
+
+</script>
+<script>
+    $(document).ready(function() {
+        $("img.lazy").lazyload({
+            effect: "fadeIn"
+        });
+    });
+
+</script>
+{% block body %}{% endblock %}
+<div style="margin:10px;" align="center">
+<strong>此 Flask 训练项目完成于：2018年12月16日</strong>
+</div>
+</body>

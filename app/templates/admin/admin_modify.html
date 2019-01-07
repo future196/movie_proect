@@ -1,0 +1,64 @@
+{% extends "admin/base.html" %}
+{% block body %}
+    <div class="content-wrapper">
+        <!--内容-->
+        <section class="content-header">
+            <h1>微电影管理系统</h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> 管理员管理</a></li>
+                <li class="active">添加管理员</li>
+            </ol>
+        </section>
+        <section class="content" id="showcontent">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">添加管理员</h3>
+                        {% for msg in get_flashed_messages(category_filter=["status"]) %}
+                        <time style="color:red">&nbsp;&nbsp;{{ msg }}</time>
+                        {% endfor %}
+                        </div>
+                        <form method="post">
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label>管理员名称</label>
+                                    {% for msg in form.name.errors %}
+                                    <time style="color:red;">&nbsp;&nbsp;{{ msg }}</time>
+                                    {% endfor %}
+                                    {{ form.name }}
+                                </div>
+                                <div class="form-group">
+                                    <label>管理员密码</label>
+                                    {% for msg in form.password.errors %}
+                                    <time style="color:red;">&nbsp;&nbsp;{{ msg }}</time>
+                                    {% endfor %}
+                                    {{ form.password }}
+                                </div>
+                                <div class="form-group">
+                                    <label>管理员重复密码</label>
+                                    {% for msg in form.re_password.errors %}
+                                    <time style="color:red;">&nbsp;&nbsp;{{ msg }}</time>
+                                    {% endfor %}
+                                    {{ form.re_password }}
+                                </div>
+                                <div class="form-group">
+                                    <label>所属角色</label>
+                                    {% for msg in form.role.errors %}
+                                    <time style="color:red;">&nbsp;&nbsp;{{ msg }}</time>
+                                    {% endfor %}
+                                    {{ form.role }}
+                                </div>
+                            </div>
+                            <div class="box-footer">
+                                {{ form.csrf_token }}
+                                {{ form.submit }}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--内容-->
+    </div>
+{% endblock %}

@@ -1,0 +1,170 @@
+{% extends "admin/base.html" %}
+{% block body %}
+    <div class="content-wrapper">
+        <!--内容-->
+        <section class="content-header">
+            <h1>微电影管理系统</h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> 会员管理</a></li>
+                <li class="active">会员列表</li>
+            </ol>
+        </section>
+        <section class="content" id="showcontent">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box box-primary">
+                        <div class="box-header">
+                            <h3 class="box-title">会员列表</h3>
+                            <div class="box-tools">
+                                <form action="/admin/user_list">
+                                <div class="input-group input-group-sm" style="width: 150px;">
+                                    <input type="text" name="search" class="form-control pull-right"
+                                           placeholder="请输入关键字...">
+
+                                    <div class="input-group-btn">
+                                        <button type="submit" class="btn btn-default"><i class="fa fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="box-body table-responsive no-padding">
+                            <table class="table table-hover">
+                                <tbody>
+                                <tr>
+                                    <th>编号</th>
+                                    <th>昵称</th>
+                                    <th>邮箱</th>
+                                    <th>手机</th>
+                                    <th>头像</th>
+                                    <th>状态</th>
+                                    <th>注册时间</th>
+                                    <th>操作事项</th>
+                                </tr>
+                                {% for user in paginate.items %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ user.username }}</td>
+                                    <td>{{ user.email }}</td>
+                                    <td>{{ user.telephone }}</td>
+                                    <td>
+                                        <img src="/static/img/user_icon/{{ user.icon }}" style="width:50px;height:50px;" class="img-responsive center-block" alt="">
+                                    </td>
+                                    {% if user.status == "1" %}
+                                    <td>正常</td>
+                                    {% else %}
+                                    <td>冻结</td>
+                                    {% endif %}
+                                    <td>{{ user.register_time }}</td>
+                                    <td>
+                                        <a class="label label-success" href="/admin/user_view?target={{ user.id }}">查看</a>
+                                        &nbsp;
+                                        {% if user.status == "1" %}
+                                        <a class="label label-info">解冻</a>
+                                        &nbsp;
+                                        <a onclick="user_frost({{ user.id }})" class="label label-warning">冻结</a>
+                                        &nbsp;
+                                        {% else %}
+                                        <a onclick="user_recover({{ user.id }})" class="label label-info">解冻</a>
+                                        &nbsp;
+                                        <a class="label label-warning">冻结</a>
+                                        &nbsp;
+                                        {% endif %}
+                                        <a onclick="user_del({{ user.id }})" class="label label-danger">删除</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="box-footer clearfix">
+                            <ul class="pagination pagination-sm no-margin pull-right">
+                                <li><a href="/admin/user_list?page=1">首页</a></li>
+                                {% if paginate.has_prev %}
+                                <li><a href="/admin/user_list?page={{ paginate.prev_num }}">上一页</a></li>
+                                {% else %}
+                                <li><a href="javascript:;">上一页</a></li>
+                                {% endif %}
+                                {% for i in range(paginate.pages) %}
+                                <li><a href="/admin/user_list?page={{ loop.index }}">{{ loop.index }}</a></li>
+                                {% endfor %}
+                                {% if paginate.has_next %}
+                                <li><a href="/admin/user_list?page={{ paginate.next_num }}">下一页</a></li>
+                                {% else %}
+                                <li><a href="javascript:;">下一页</a></li>
+                                {% endif %}
+                                <li><a href="/admin/user_list?page={{ paginate.pages }}">尾页</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <script>
+function user_del(target){
+if(confirm("确认删除吗？")){
+    var xhr;
+    if(window.XMLHttpRequest){
+    xhr = new XMLHttpRequest();
+    }
+    url ="/admin/user_del?target=" + target;
+    xhr.open("GET",url,true);
+
+    xhr.onreadystatechange=function(){
+
+        if(xhr.readyState == 4 && xhr.status == 200){
+            var data = xhr.responseText;
+            data = JSON.parse(data);
+            location.reload();
+            alert(data.status);
+            }
+        }
+        xhr.send();
+}
+}
+function user_frost(target){
+if(confirm("确认冻结吗？")){
+    var xhr;
+    if(window.XMLHttpRequest){
+    xhr = new XMLHttpRequest();
+    }
+    url ="/admin/user_frost?target=" + target;
+    xhr.open("GET",url,true);
+
+    xhr.onreadystatechange=function(){
+
+        if(xhr.readyState == 4 && xhr.status == 200){
+            var data = xhr.responseText;
+            data = JSON.parse(data);
+            location.reload();
+            alert(data.status);
+            }
+        }
+        xhr.send();
+}
+}
+function user_recover(target){
+if(confirm("确认解冻吗？")){
+    var xhr;
+    if(window.XMLHttpRequest){
+    xhr = new XMLHttpRequest();
+    }
+    url ="/admin/user_recover?target=" + target;
+    xhr.open("GET",url,true);
+
+    xhr.onreadystatechange=function(){
+
+        if(xhr.readyState == 4 && xhr.status == 200){
+            var data = xhr.responseText;
+            data = JSON.parse(data);
+            location.reload();
+            alert(data.status);
+            }
+        }
+        xhr.send();
+}
+}
+        </script>
+    </div>
+ {% endblock %}
